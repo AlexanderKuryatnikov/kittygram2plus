@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
 # from rest_framework.pagination import PageNumberPagination
 # from rest_framework.pagination import LimitOffsetPagination
 # from rest_framework.throttling import ScopedRateThrottle
@@ -21,6 +22,12 @@ class CatViewSet(viewsets.ModelViewSet):
     # pagination_class = PageNumberPagination
     # pagination_class = LimitOffsetPagination
     pagination_class = CatsPagination
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,
+                       filters.OrderingFilter)
+    filterset_fields = ('color', 'birth_year')
+    search_fields = ('name', '=owner__username')
+    ordering_fields = ('name', 'birth_year')
+    ordering = ('birth_year',)
 
     # def get_permissions(self):
     #    if self.action == 'retrieve':
